@@ -1,6 +1,8 @@
 # Práctica 3
 
-Controller | Description
+REST API for coworking space with 20 seats. Database hosted in MongoDB
+
+Endpoint | Description
 --- | ---
 GET **/status** | Shows server status
 POST **/register** | User register
