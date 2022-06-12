@@ -1,4 +1,4 @@
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { Db } from "mongodb";
 import { v4 as uuid } from "uuid";
 
@@ -32,7 +32,7 @@ export const register = async (req: Request, res: Response) => {
   const isRegistered = await collection.findOne({ email });
 
   if (isRegistered) {
-    return res.status(409).send("Already registered")
+    return res.status(409).send("Already registered");
   }
 
   await collection.insertOne({ email, password });
@@ -111,7 +111,7 @@ export const freeseats = async (req: Request, res: Response) => {
   const today = new Date();
 
   if (date < today) {
-    return res.status(500).send("Date must be from today on")
+    return res.status(500).send("Date must be from today on");
   }
 
   const seats = (await collection_seats.find({ day, month, year }).toArray()).map((e) => { return parseInt(e.num) });
@@ -238,7 +238,7 @@ export const mybookings = async (req: Request, res: Response) => {
   })
 
   if (myseats.length == 0) {
-    return res.status(404).send("No future bookings")
+    return res.status(404).send("No future bookings");
   }
 
   return res.status(200).send(myseats);

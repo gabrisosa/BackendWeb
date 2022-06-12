@@ -18,7 +18,7 @@ const run = async () => {
 
   app.get("/status", status);
   app.post("/register", register);
-  app.post("/login", login );
+  app.post("/login", login);
   app.post("/logout", logout);
   app.get("/freeseats", freeseats);
   app.post("/book", book);
@@ -31,5 +31,5 @@ const run = async () => {
 try {
   run();
 } catch (e) {
-  throw (e);
+  console.error(e)
 }
