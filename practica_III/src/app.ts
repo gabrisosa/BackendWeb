@@ -1,7 +1,7 @@
 import express from "express";
 import { Db } from "mongodb"
 import { connectDB } from "./mongo"
-import { book, free, freeseats, login, logout, mybookings, register, status } from "./resolvers";
+import { book, free, freeseats, login, logout, mybookings, register, status } from "./controllers";
 
 const run = async () => {
   const db: Db = await connectDB();
