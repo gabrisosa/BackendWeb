@@ -5,7 +5,7 @@ REST API hosted in MongoDB populated with [The Rick and Morty API](https://ricka
 Endpoint | Description
 --- | ---
 GET **/status** | Shows server status
-GET **/characters** | Shows all character
+GET **/characters** | Shows all characters
 GET **/character/:id** | Shows single character
 PUT **/switchstatus/:id** | Switches status from alive to dead and viceversa
 DELETE **/character/:id** | Deletes character
