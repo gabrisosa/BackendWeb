@@ -4,12 +4,33 @@ GraphQL API that handles users, recipes and ingredients
 
 ## Mutations
 
-```graphql:practica_IV/src/schema.ts
+```graphql:
+type Mutation {
+  signUp(email: String!, pwd: String!): String
+  deleteAccount(email: String!, pwd: String!): String
+
+  logIn(email: String!, pwd: String!): String
+  logOut: String
+
+  addIngredient(name: String!): String
+  deleteIngredient(name: String!): String
+
+  addRecipe(recipe: RecipeInput!): String
+  updateRecipe(recipe: RecipeInput!): String
+  deleteRecipe(name: String!): String
+}
 ```
 
 ## Queries
 
-```graphql:src/schema.ts [33-39]
+```graphql
+type Query {
+  getRecipe(id: ID!): Recipe
+  getRecipes(author: String, ingredient: String): [Recipe]
+  
+  getUser(id: ID!): User
+  getUsers: [User]
+}
 ```
 
 
