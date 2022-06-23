@@ -1,5 +1,5 @@
 import { ApolloError, UserInputError } from "apollo-server";
-import { Collection, Db, MongoOptions } from "mongodb";
+import { Collection } from "mongodb";
 import { v4 as uuid } from "uuid";
 
 const bcrypt = require('bcrypt');
@@ -37,6 +37,7 @@ export const Mutation = {
 
   },
   deleteAccount: async (parent: any, args: { email: string, pwd: string }, context: { user: MongoUser, db_users: Collection, db_recipes: Collection }) => {
+
     const isRegistered = await context.db_users.findOne({ email: args.email });
 
     if (!isRegistered) {
@@ -58,6 +59,7 @@ export const Mutation = {
     }
 
     throw new ApolloError("Unexpected error", "404");
+
   },
   logIn: async (parent: any, args: { email: string, pwd: string }, context: { db_users: Collection }) => {
 
@@ -76,6 +78,7 @@ export const Mutation = {
     }
 
     throw new ApolloError("Wrong email or password", "404");
+
   },
   logOut: async (parent: any, args: any, context: { db_users: Collection, user: MongoUser }) => {
 
@@ -97,6 +100,7 @@ export const Mutation = {
     }
 
     throw new ApolloError(`Ingredient ${args.name} alredy in DB`, "404");
+
   },
   deleteIngredient: async (parent: any, args: { name: string }, context: { db_ingredients: Collection, db_recipes: Collection }) => {
 
@@ -127,7 +131,7 @@ export const Mutation = {
       throw new ApolloError("Recipe already in DB", "404")
     }
 
-    if (args.recipe.ingredients.length > 0) {
+    if (args.recipe.description && args.recipe.ingredients && args.recipe.ingredients.length > 0) {
       args.recipe.ingredients.forEach(async (i: string) => {
         const isInserted = await context.db_ingredients.findOne({ name: i });
         if (!isInserted) {
@@ -152,9 +156,7 @@ export const Mutation = {
         return "Recipe succesfully added"
       }
 
-    } else {
-      throw new UserInputError("No ingredients");
-    }
+    } else throw new UserInputError("Missing description or ingredients");
 
     throw new ApolloError("Unexpected error", "404");
 
@@ -162,13 +164,14 @@ export const Mutation = {
   updateRecipe: async (parent: any, args: { recipe: { name: string, description: string, ingredients: string[] } }, context: {
     db_ingredients: Collection, db_recipes: Collection, db_users: Collection, user: MongoUser
   }) => {
+
     const existingRecipe = await context.db_recipes.findOne({ name: args.recipe.name });
 
     if (!existingRecipe) {
       throw new ApolloError(`Recipe ${args.recipe.name} does not exist`, "403");
     }
 
-    if (args.recipe.ingredients.length > 0) {
+    if (args.recipe.description && args.recipe.ingredients && args.recipe.ingredients.length > 0) {
       if (existingRecipe.author !== context.user.email) {
         throw new ApolloError("You did not create this recipe", "404");
       }
@@ -186,9 +189,7 @@ export const Mutation = {
         return `Recipe ${args.recipe.name} succesfully updated`;
       }
 
-    } else {
-      throw new UserInputError("No ingredients");
-    }
+    } else throw new UserInputError("Missing description or ingredients");
 
     throw new ApolloError("Unexpected error", "404");
 
@@ -208,7 +209,7 @@ export const Mutation = {
 
     const updatedUser = await context.db_users.updateOne({ email: context.user.email }, { $pull: { recipes: args.name } });
 
-    //await context.db_ingredients.updateMany({}, { $pull: { recipes: args.name }})
+    //await context.db_ingredients.updateMany({ recipes: args.name }, { $pull: { recipes: args.name } });
 
     if (deletedRecipe && updatedUser) {
       return `Recipe ${args.name} succesfully deleted`;

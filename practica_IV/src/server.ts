@@ -43,7 +43,7 @@ const run = async () => {
         return {
           db_users,
           db_ingredients,
-          db_recipes,
+          db_recipes
         }
       }
     }

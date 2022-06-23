@@ -31,7 +31,11 @@ type User{
 }
 
 type Query {
-  test(num:Int!): Int!
+  getRecipe(id: ID!): Recipe
+  getRecipes(author: String, ingredient: String): [Recipe]
+  
+  getUser(id: ID!): User
+  getUsers: [User]
 }
 
 type Mutation {
