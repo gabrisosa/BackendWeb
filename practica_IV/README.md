@@ -4,7 +4,7 @@ GraphQL API that handles users, recipes and ingredients
 
 ## Mutations
 
-```graphql:src/schema.ts
+```graphql:practica_IV/src/schema.ts
 ```
 
 ## Queries
