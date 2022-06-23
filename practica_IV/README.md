@@ -33,7 +33,6 @@ type Query {
 }
 ```
 
-
 ### Install dependencies
 
 Run
