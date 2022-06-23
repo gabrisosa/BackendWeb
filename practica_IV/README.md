@@ -4,7 +4,7 @@ GraphQL API that handles users, recipes and ingredients
 
 ## Mutations
 
-```graphql:
+```graphql
 type Mutation {
   signUp(email: String!, pwd: String!): String
   deleteAccount(email: String!, pwd: String!): String
