@@ -33,7 +33,12 @@ export const Query = {
       return {}
     }
 
-    const myRecipes = await context.db_recipes.find(myQuery()).toArray();
+    const myRecipes = (await context.db_recipes.find(myQuery()).toArray()).map(r => {
+      return {
+        ...r,
+        id: r._id.toString()
+      }
+    })
 
     if (myRecipes) {
       return myRecipes;
@@ -57,8 +62,10 @@ export const Query = {
     }
 
     throw new ApolloError("No user found with that id", "404");
+
   },
   getUsers: async (parent: any, args: any, context: { db_users: Collection }) => {
+
 
     const allUsers = (await context.db_users.find().toArray()).map(u => {
       return {
@@ -73,5 +80,48 @@ export const Query = {
 
     return allUsers;
 
+  }
+}
+
+export const Recipe = {
+  ingredients: async (parent: { ingredients: string[] }, args: any, context: { db_ingredients: Collection }) => {
+    const myIngredients = (await context.db_ingredients.find({ name: { $in: parent.ingredients } }).toArray()).map(i => {
+      return {
+        ...i,
+        id: i._id.toString()
+      }
+    });
+    return myIngredients;
+  },
+  author: async (parent: { author: string }, args: any, context: { db_users: Collection }) => {
+    const myUser = await context.db_users.findOne({ email: parent.author });
+    return {
+      ...myUser,
+      id: myUser?._id.toString()
+    }
+  }
+}
+
+export const Ingredient = {
+  recipes: async (parent: { name: string }, args: any, context: { db_recipes: Collection }) => {
+    const myRecipes = (await context.db_recipes.find({ ingredients: parent.name }).toArray()).map(r => {
+      return {
+        ...r,
+        id: r._id.toString()
+      }
+    })
+    return myRecipes;
+  }
+}
+
+export const User = {
+  recipes: async (parent: { email: string }, args: any, context: { db_recipes: Collection }) => {
+    const myRecipes = (await context.db_recipes.find({ author: parent.email }).toArray()).map(r => {
+      return {
+        ...r,
+        id: r._id.toString()
+      }
+    });
+    return myRecipes;
   }
 }

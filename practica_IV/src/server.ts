@@ -1,12 +1,15 @@
 import { ApolloError, ApolloServer } from "apollo-server";
 import { connectDB } from "./mongo";
 import { Mutation } from "./resolvers/mutation";
-import { Query } from "./resolvers/query";
+import { Ingredient, Query, Recipe, User } from "./resolvers/query";
 import { typeDefs } from "./schema";
 
 const resolvers = {
   Query,
-  Mutation
+  Mutation,
+  Recipe,
+  Ingredient,
+  User
 }
 
 const run = async () => {

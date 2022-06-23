@@ -1,14 +1,13 @@
 import { gql } from "apollo-server";
 
 export const typeDefs = gql`
-
-type Ingredient{
+type Ingredient {
   id: ID!
   name: String!
   recipes: [Recipe!]!
 }
 
-type Recipe{
+type Recipe {
   id: ID!
   name: String!
   description: String!
@@ -23,11 +22,12 @@ input RecipeInput {
 }
 
 
-type User{
+type User {
   id: ID!
   email: String!
   pwd: String!
   token: String
+  recipes: [Recipe!]!
 }
 
 type Query {
